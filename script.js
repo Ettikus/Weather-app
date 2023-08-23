@@ -10,7 +10,7 @@ searchButton.addEventListener("click", () => {
 });
 
 function getWeather(city) {
-    const apiUrl = `https://api.weatherapi.com/v1/current.json?key=e42af692e8bd4f55adc95704232008&q=${city}&aqi=no`;
+    const apiUrl = `api.openweathermap.org/data/2.5/weather?id=524901&APPID=be0f40f4dfad82fdc8eb601136fb0bd1`;
 
     fetch(apiUrl)
         .then(response => response.json())
