@@ -1,7 +1,7 @@
 const searchButton = document.getElementById("searchButton");
 const cityInput = document.getElementById("cityInput");
 const weatherInfo = document.getElementById("weatherInfo");
-const apiKey = "c7c7f2c822c3e21c088b2de6be5d4e3a"; // Replace with your OpenWeatherMap API key
+const apiKey = '0c2e473d5e19be74690c264821b17c64'; 
 
 searchButton.addEventListener("click", () => {
     const city = cityInput.value;
@@ -11,22 +11,27 @@ searchButton.addEventListener("click", () => {
 });
 
 function getWeather(city) {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${c7c7f2c822c3e21c088b2de6be5d4e3a}`;
+    const apiUrl = `http://api.weatherstack.com/current?access_key=${apiKey}&query=${city}`;
 
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-            const temperature = data.main.temp;
-            const description = data.weather[0].description;
+            if (data.current) {
+                const temperature = data.current.temperature;
+                const weatherDescription = data.current.weather_descriptions[0];
+                const humidity = data.current.humidity;
 
-            weatherInfo.innerHTML = `
-                <h2>Weather in ${city}</h2>
-                <p>Temperature: ${temperature} K</p>
-                <p>Description: ${description}</p>
-            `;
+                weatherInfo.innerHTML = `
+                    <h2>Weather in ${city}</h2>
+                    <p>Temperature: ${temperature}°C</p>
+                    <p>Weather description: ${weatherDescription}</p>
+                    <p>Humidity: ${humidity}%</p>
+                `;
+            } else {
+                weatherInfo.innerHTML = "Error fetching weather data.";
+            }
         })
         .catch(error => {
             console.error("Error fetching weather data:", error);
-            weatherInfo.innerHTML = "Error fetching weather data.";
+            weatherInfo.innerHTML = "Error fetching weather data. Please check your API request and response.";
         });
-}
