@@ -1,7 +1,6 @@
 const searchButton = document.getElementById("searchButton");
 const cityInput = document.getElementById("cityInput");
 const weatherInfo = document.getElementById("weatherInfo");
-const apiKey = '0c2e473d5e19be74690c264821b17c64'; 
 
 searchButton.addEventListener("click", () => {
     const city = cityInput.value;
@@ -11,27 +10,23 @@ searchButton.addEventListener("click", () => {
 });
 
 function getWeather(city) {
-    const apiUrl = `http://api.weatherstack.com/current?access_key=${apiKey}&query=${city}`;
+    const apiUrl = `https://api.weatherapi.com/v1/current.json?key=e42af692e8bd4f55adc95704232008&q=${city}&aqi=no`;
 
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-            if (data.current) {
-                const temperature = data.current.temperature;
-                const weatherDescription = data.current.weather_descriptions[0];
-                const humidity = data.current.humidity;
+            const temperature = data.current.temp_c;
+            const description = data.current.condition.text;
 
-                weatherInfo.innerHTML = `
-                    <h2>Weather in ${city}</h2>
-                    <p>Temperature: ${temperature}°C</p>
-                    <p>Weather description: ${weatherDescription}</p>
-                    <p>Humidity: ${humidity}%</p>
-                `;
-            } else {
-                weatherInfo.innerHTML = "Error fetching weather data.";
-            }
+            weatherInfo.innerHTML = `
+                <h2>Weather in ${city}</h2>
+                <p>Temperature: ${temperature}°C</p>
+                <p>Description: ${description}</p>
+            `;
         })
         .catch(error => {
             console.error("Error fetching weather data:", error);
-            weatherInfo.innerHTML = "Error fetching weather data. Please check your API request and response.";
+            weatherInfo.innerHTML = "Error fetching weather data.";
         });
+}
+
